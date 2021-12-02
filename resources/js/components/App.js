@@ -10,6 +10,8 @@ import { UsersContext } from '../context/UsersContext';
 const App = () => {
     const [results,setResults] = useState([]);
     const [users, setUsers] = useState([]);
+    const [edit,setEdit] = useState(false);
+    const [editId, setEditId] = useState(null);
     useEffect(() => {
         fetchData();
     },[]);
@@ -25,6 +27,10 @@ const App = () => {
     const fetchData = async() => {
         const response = await Axios.get("/api/todo");
         setResults(response.data.data);
+    }
+    const handleEdit = (value,id) => {
+        setEdit(value);
+        setEditId(id);
     }
     return (
         <div className="row">
@@ -45,12 +51,12 @@ const App = () => {
                             </span>
                         </div>
                     </div>
-                    <TodoList results={results} />
+                    <TodoList handleEdit={handleEdit} results={results} />
                 </div>
             </div>
 
             <UsersContext.Provider value={users}>
-                <TodoAdd />
+                <TodoAdd handleEdit={handleEdit} edit={edit} id={editId} />
             </UsersContext.Provider>
         </div>
     );

@@ -2,10 +2,20 @@ import React from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const Date = ({value,handleChange}) => {
+
+
+const CustomDate = ({value,handleChange}) => {
+    let date = new Date();
+    if(value){
+       date = new Date(value); 
+    }
     return (
-        <DatePicker className="form-control" selected={value} onChange={handleChange} />
+        <DatePicker
+            className="form-control"
+            selected={date}
+            onChange={handleChange}
+        />
     );
 }
 
-export default Date
+export default CustomDate;

@@ -90424,6 +90424,16 @@ var App = function App() {
       users = _useState4[0],
       setUsers = _useState4[1];
 
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      edit = _useState6[0],
+      setEdit = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(null),
+      _useState8 = _slicedToArray(_useState7, 2),
+      editId = _useState8[0],
+      setEditId = _useState8[1];
+
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     fetchData();
   }, []);
@@ -90485,6 +90495,11 @@ var App = function App() {
     };
   }();
 
+  var handleEdit = function handleEdit(value, id) {
+    setEdit(value);
+    setEditId(id);
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -90503,10 +90518,15 @@ var App = function App() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
     className: "fas fa-plus"
   }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_TodoList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    handleEdit: handleEdit,
     results: results
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_context_UsersContext__WEBPACK_IMPORTED_MODULE_7__["UsersContext"].Provider, {
     value: users
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_TodoAdd__WEBPACK_IMPORTED_MODULE_6__["default"], null)));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_TodoAdd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    handleEdit: handleEdit,
+    edit: edit,
+    id: editId
+  })));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (App);
@@ -90598,17 +90618,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var Date = function Date(_ref) {
+var CustomDate = function CustomDate(_ref) {
   var value = _ref.value,
       handleChange = _ref.handleChange;
+  var date = new Date();
+
+  if (value) {
+    date = new Date(value);
+  }
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_datepicker__WEBPACK_IMPORTED_MODULE_1___default.a, {
     className: "form-control",
-    selected: value,
+    selected: date,
     onChange: handleChange
   });
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Date);
+/* harmony default export */ __webpack_exports__["default"] = (CustomDate);
 
 /***/ }),
 
@@ -90700,17 +90726,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Asignee__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Asignee */ "./resources/js/components/Asignee.js");
 /* harmony import */ var _Date__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Date */ "./resources/js/components/Date.js");
 /* harmony import */ var _Editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Editor */ "./resources/js/components/Editor.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -90730,7 +90756,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var TodoAdd = function TodoAdd() {
+var TodoAdd = function TodoAdd(_ref) {
+  var handleEdit = _ref.handleEdit,
+      edit = _ref.edit,
+      id = _ref.id;
   var intitalState = {
     title: "",
     description: "",
@@ -90747,6 +90776,46 @@ var TodoAdd = function TodoAdd() {
       _useState4 = _slicedToArray(_useState3, 2),
       errors = _useState4[0],
       setErrors = _useState4[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
+    console.log(edit);
+
+    if (edit) {
+      fetchData();
+    }
+  }, [edit]);
+
+  var fetchData = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/todo/" + id);
+
+            case 2:
+              response = _context.sent;
+              setData({
+                title: response.data.data.title,
+                description: response.data.data.description,
+                asignee: response.data.data.asignee,
+                due_date: response.data.data.formated_due_date
+              });
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function fetchData() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
 
   var handleChange = function handleChange(e) {
     var _e$target = e.target,
@@ -90775,6 +90844,7 @@ var TodoAdd = function TodoAdd() {
   };
 
   var handleDateChange = function handleDateChange(e) {
+    console.log(e);
     setData(function (prevState) {
       return _objectSpread(_objectSpread({}, prevState), {}, {
         due_date: e
@@ -90783,47 +90853,121 @@ var TodoAdd = function TodoAdd() {
   };
 
   var onSubmit = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              if (edit) {
+                editTodo();
+              } else {
+                createTodo();
+              }
+
+            case 1:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function onSubmit() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+
+  var createTodo = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               setErrors({});
-              _context.prev = 1;
-              _context.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/todo', data);
+              _context3.prev = 1;
+              _context3.next = 4;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/todo", data);
 
             case 4:
-              response = _context.sent;
+              response = _context3.sent;
               setErrors({});
               setData(intitalState);
               $("#exampleModalCenter").modal("hide");
-              _context.next = 13;
+              _context3.next = 13;
               break;
 
             case 10:
-              _context.prev = 10;
-              _context.t0 = _context["catch"](1);
+              _context3.prev = 10;
+              _context3.t0 = _context3["catch"](1);
 
-              if (_context.t0.response.status === 422) {
-                setErrors(_context.t0.response.data.errors);
+              if (_context3.t0.response.status === 422) {
+                setErrors(_context3.t0.response.data.errors);
+                handleEdit(false, null);
               } else {
                 setErrors({});
                 setData(intitalState);
                 $("#exampleModalCenter").modal("hide");
+                handleEdit(false, null);
               }
 
             case 13:
             case "end":
-              return _context.stop();
+              return _context3.stop();
           }
         }
-      }, _callee, null, [[1, 10]]);
+      }, _callee3, null, [[1, 10]]);
     }));
 
-    return function onSubmit() {
-      return _ref.apply(this, arguments);
+    return function createTodo() {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+
+  var editTodo = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              setErrors({});
+              _context4.prev = 1;
+              _context4.next = 4;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.put("/api/todo/" + id, data);
+
+            case 4:
+              response = _context4.sent;
+              setErrors({});
+              setData(intitalState);
+              $("#exampleModalCenter").modal("hide");
+              handleEdit(false, null);
+              _context4.next = 14;
+              break;
+
+            case 11:
+              _context4.prev = 11;
+              _context4.t0 = _context4["catch"](1);
+
+              if (_context4.t0.response.status === 422) {
+                setErrors(_context4.t0.response.data.errors);
+              } else {
+                setErrors({});
+                setData(intitalState);
+                $("#exampleModalCenter").modal("hide");
+                handleEdit(false, null);
+              }
+
+            case 14:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, null, [[1, 11]]);
+    }));
+
+    return function editTodo() {
+      return _ref5.apply(this, arguments);
     };
   }();
 
@@ -90944,13 +91088,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var TodoList = function TodoList(_ref) {
-  var results = _ref.results;
+  var results = _ref.results,
+      handleEdit = _ref.handleEdit;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "list-group list-group-flush"
   }, results && results.map(function (result) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      "data-toggle": "modal",
+      "data-target": "#exampleModalCenter",
       key: result.id,
-      className: "list-group-item d-flex flex-column"
+      className: "list-group-item d-flex flex-column",
+      onClick: function onClick() {
+        return handleEdit(true, result.id);
+      }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, result.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "d-flex justify-content-between"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
@@ -91000,8 +91150,8 @@ var UsersContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.cre
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/kundan/Projects/Todo-App/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/kundan/Projects/Todo-App/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/kundan/repos/Todo-app/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/kundan/repos/Todo-app/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

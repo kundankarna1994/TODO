@@ -1,10 +1,10 @@
 import Axios from "axios";
-import React,{useState,useContext} from "react";
+import React,{useState,useEffect} from "react";
 import Asignee from "./Asignee";
-import Date from "./Date";
+import CustomDate from "./Date";
 import TinyEditor from "./Editor";
 
-const TodoAdd = () => {
+const TodoAdd = ({handleEdit,edit,id}) => {
     const intitalState = {
         title: "",
         description: "",
@@ -14,6 +14,22 @@ const TodoAdd = () => {
     const [data,setData] = useState(intitalState);
     const [errors,setErrors] = useState({});
     
+    useEffect(() => {
+        console.log(edit);
+        if(edit){
+            fetchData();
+        }
+    }, [edit]);
+
+    const fetchData = async() => {
+         const response = await Axios.get("/api/todo/" + id);
+         setData({
+             title: response.data.data.title,
+             description: response.data.data.description,
+             asignee: response.data.data.asignee,
+             due_date: response.data.data.formated_due_date,
+         });
+    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({
@@ -36,6 +52,7 @@ const TodoAdd = () => {
         }));
     }
     const handleDateChange = (e) => {
+        console.log(e);
         setData((prevState) => ({
             ...prevState,
             due_date: e,
@@ -43,22 +60,51 @@ const TodoAdd = () => {
     }
 
     const onSubmit = async() => {
+        if(edit){
+            editTodo();
+        }else{
+            createTodo();
+        }
+    }
+
+    const createTodo = async () => {
         setErrors({});
-        try{
-            const response = await Axios.post('/api/todo',data);
+        try {
+            const response = await Axios.post("/api/todo", data);
             setErrors({});
             setData(intitalState);
             $("#exampleModalCenter").modal("hide");
-        }catch(err){
-            if(err.response.status === 422){
+        } catch (err) {
+            if (err.response.status === 422) {
                 setErrors(err.response.data.errors);
-                
-            }else{
+                handleEdit(false, null);
+            } else {
                 setErrors({});
                 setData(intitalState);
                 $("#exampleModalCenter").modal("hide");
+                handleEdit(false, null);
             }
         }
+    }
+
+    const editTodo = async () => {
+         setErrors({});
+         try {
+             const response = await Axios.put("/api/todo/" + id, data);
+             setErrors({});
+             setData(intitalState);
+             $("#exampleModalCenter").modal("hide");
+             handleEdit(false,null);
+         } catch (err) {
+             if (err.response.status === 422) {
+                 setErrors(err.response.data.errors);
+             } else {
+                 setErrors({});
+                 setData(intitalState);
+                 $("#exampleModalCenter").modal("hide");
+                 handleEdit(false, null);
+             }
+         }
     }
     return (
         <div
@@ -132,7 +178,7 @@ const TodoAdd = () => {
                         </div>
                         <div className="form-group">
                             <label htmlFor="due_date">Due</label>
-                            <Date
+                            <CustomDate
                                 handleChange={selectChange}
                                 value={data.due_date}
                                 handleChange={handleDateChange}

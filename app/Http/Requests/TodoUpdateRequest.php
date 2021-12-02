@@ -25,8 +25,9 @@ class TodoUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255|string',
-            'slug' => 'required|max:255|string',
-            'description' => 'string'
+            'due_date' => 'required',
+            'description' => 'string',
+            'asignee' => 'integer|nullable'
         ];
     }
 
@@ -34,9 +35,7 @@ class TodoUpdateRequest extends FormRequest
     {
         return [
             'title.required' => 'Todo title is required',
-            'slug.required' => 'Slug is required',
             'title.max' => 'Title cannot be more than 255 character',
-            'slug.max' => 'Slug cannot be more than 255 character',
         ];
     }
 }

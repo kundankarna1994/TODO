@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TodoResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\TodoStoreRequest;
+use App\Http\Requests\TodoUpdateRequest;
 
 class TodoController extends Controller
 {
@@ -50,7 +51,7 @@ class TodoController extends Controller
      */
     public function show($id)
     {
-        //
+        return new TodoResource(Todo::find($id));
     }
 
     /**
@@ -60,9 +61,13 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TodoUpdateRequest $request, $id)
     {
-        //
+        $model = Todo::find($id);
+        $data = $request->validated();
+        $data['due_date'] = Carbon::parse($data['due_date'])->toDateTimeString();
+        $model->update($data);
+        return response()->json('Todo Updated', 200);
     }
 
     /**
