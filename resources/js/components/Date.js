@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const CustomDate = ({value,handleChange}) => {
-    let date = new Date();
+    let date = '';
     if(value){
        date = new Date(value); 
     }

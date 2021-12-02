@@ -28,7 +28,9 @@
     "dependencies": {
         "@tinymce/tinymce-react": "^3.13.0",
         "history": "^5.1.0",
+        "react-bootstrap-sweetalert": "^5.2.0",
         "react-datepicker": "^4.4.0",
+        "react-mentions": "^4.3.0",
         "react-router-dom": "^6.0.2",
         "react-select": "^5.2.1"
     }

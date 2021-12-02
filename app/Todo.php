@@ -13,8 +13,8 @@ class Todo extends Model
 
     protected $fillable = ['title','slug','completed','user_id','assignee','due_date','description'];
 
-    public function getRouteKeyName()
+    public function comments()
     {
-        return 'slug';
+        return $this->hasMany(Comment::class, 'todo_id');
     }
 }

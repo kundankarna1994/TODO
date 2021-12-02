@@ -24,7 +24,9 @@ class TodoResource extends JsonResource
             'due_date' => $this->due_date,
             'description' => $this->description,
             'created_at' => $this->created_at,
-            'formated_due_date' => Carbon::parse($this->due_date)->format('m/d/Y')
+            'formated_due_date' => Carbon::parse($this->due_date)->format('m/d/Y'),
+            'total_comments' => $this->comments->count(),
+            'readable_due_date' => Carbon::parse($this->due_date)->diffForHumans()
         ];
     }
 }

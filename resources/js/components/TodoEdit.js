@@ -1,22 +1,42 @@
 import Axios from "axios";
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import Asignee from "./Asignee";
+import Comments from "./Comments";
 import CustomDate from "./Date";
 import TinyEditor from "./Editor";
+import { useParams, useNavigate } from "react-router-dom";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { useNavigate } from "react-router-dom";
 
-const TodoAdd = ({}) => {
+const TodoEdit = ({}) => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const intitalState = {
         title: "",
         description: "",
         asignee: "",
         due_date: "",
     };
-     const navigate = useNavigate();
-    const [data,setData] = useState(intitalState);
-    const [errors,setErrors] = useState({});
+    const [data, setData] = useState(intitalState);
+    const [errors, setErrors] = useState({});
     const [alert, setAlert] = useState(false);
+    useEffect(() => {
+        fetchData();
+    }, [id]);
+
+    const fetchData = async () => {
+        const response = await Axios.get("/api/todo/" + id);
+        setData({
+            title: response.data.data.title,
+            description: response.data.data.description,
+            asignee: response.data.data.asignee,
+            due_date: response.data.data.formated_due_date,
+        });
+    };
+
+    // const fetchComment = async() => {
+    //     const response = await Axios.get("/api/todo/" + id + '/comments');
+    //     setComments(response.data.data);
+    // }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,33 +51,31 @@ const TodoAdd = ({}) => {
             ...prevState,
             description: value,
         }));
-    }
+    };
     const selectChange = (e) => {
-        const {value} = e;
+        const { value } = e;
         setData((prevState) => ({
             ...prevState,
             asignee: value,
         }));
-    }
+    };
     const handleDateChange = (e) => {
-        console.log(e);
         setData((prevState) => ({
             ...prevState,
             due_date: e,
         }));
-    }
+    };
 
-    const onSubmit = async() => {
+    const onSubmit = async () => {
         setErrors({});
         try {
-            const response = await Axios.post("/api/todo", data);
+            await Axios.put("/api/todo/" + id, data);
             setErrors({});
-            setData(intitalState);     
-             setAlert(true);
-             setTimeout(() => {
-                 setAlert(false);
-                 navigate("/");
-             }, 1000);      
+            setAlert(true);
+            setTimeout(() => {
+                setAlert(false);
+                navigate("/");
+            }, 1000);
         } catch (err) {
             if (err.response.status === 422) {
                 setErrors(err.response.data.errors);
@@ -66,20 +84,20 @@ const TodoAdd = ({}) => {
                 setData(intitalState);
             }
         }
-    }
-    
+    };
 
     return (
         <div>
             {alert && (
                 <SweetAlert
                     success
-                    title="Woot!"
+                    title="Success!"
                     onConfirm={() => setAlert(false)}
                 >
-                    I did it!
+                    Todo Updated Successfully
                 </SweetAlert>
             )}
+
             <div className="form-group">
                 <label htmlFor="title">Title</label>
                 <input
@@ -123,11 +141,15 @@ const TodoAdd = ({}) => {
                     handleChange={handleDateChange}
                 />
             </div>
-            <button type="submit" onClick={onSubmit} className="btn btn-primary">
+            <button
+                type="submit"
+                onClick={onSubmit}
+                className="btn btn-primary"
+            >
                 Submit
             </button>
         </div>
     );
 };
 
-export default TodoAdd;
+export default TodoEdit;

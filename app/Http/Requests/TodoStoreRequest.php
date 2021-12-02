@@ -26,8 +26,8 @@ class TodoStoreRequest extends FormRequest
         return [
             'title' => 'required|max:255|string',
             'due_date' => 'required',
-            'description' => 'string',
-            'asignee' => 'integer'
+            'description' => 'string|nullable',
+            'asignee' => 'integer|nullable'
         ];
     }
 

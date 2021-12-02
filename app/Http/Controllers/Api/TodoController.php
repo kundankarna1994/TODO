@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Todo;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TodoResource;
 use Illuminate\Support\Facades\Auth;
@@ -70,14 +69,4 @@ class TodoController extends Controller
         return response()->json('Todo Updated', 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
