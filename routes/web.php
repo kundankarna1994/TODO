@@ -1,5 +1,9 @@
 <?php
 
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +15,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Auth::routes(['verify' => true]);
+
+//redirect all the routes to react router
+Route::view('{any}', 'home')->name('dashboard')->middleware(['auth','verified'])->where('any', '.*');
