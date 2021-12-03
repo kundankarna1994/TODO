@@ -19,4 +19,11 @@ class UserController extends Controller
     {
         return UserResource::collection(User::all()->except(Auth::id()));
     }
+
+    public function token()
+    {
+        $tokenResult = Auth::user()->createToken('Personal Access Token');
+        $token = $tokenResult->accessToken;
+        return response()->json($token);
+    }
 }

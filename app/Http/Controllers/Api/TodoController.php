@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\TodoCreatedEvent;
 use App\Todo;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -31,15 +32,13 @@ class TodoController extends Controller
      */
     public function store(TodoStoreRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
         $data['user_id'] = Auth::user()->id;
         $data['due_date'] = Carbon::parse($data['due_date'])->toDateTimeString();
-        $model = Todo::create($data);
-        if($model){
-            return response()->json('Todo Added',200);
-        }
-        return response()->json('Something went wrong',500);
+        Todo::create($data);
+        event(new TodoCreatedEvent());
+        return response()->json('Todo Added',200);
     }
 
     /**

@@ -11,5 +11,10 @@ class Comment extends Model
     //uncomment after migration fresh
     protected $table = "comments";
 
-    protected $fillable = ['user_id','todo_id','message'];
+    protected $fillable = ['user_id','todo_id','message', 'formated_message'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

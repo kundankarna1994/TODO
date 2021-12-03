@@ -74,10 +74,10 @@ const TodoAdd = ({}) => {
             {alert && (
                 <SweetAlert
                     success
-                    title="Woot!"
+                    title="Success!"
                     onConfirm={() => setAlert(false)}
                 >
-                    I did it!
+                   Todo Added Successfully
                 </SweetAlert>
             )}
             <div className="form-group">

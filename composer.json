@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "5.8",
         "lcobucci/jwt": "3.3.3",
+        "pusher/pusher-php-server": "~4.0",
         "tinymce/tinymce": "^5.10"
     },
     "require-dev": {

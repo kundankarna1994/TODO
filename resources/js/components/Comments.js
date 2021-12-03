@@ -1,19 +1,74 @@
-import React,{useEffect,useState,useContext} from 'react'
+import React, { useEffect, useState, useContext } from "react";
 import { MentionsInput, Mention } from "react-mentions";
-import { UsersContext } from '../context/UsersContext';
-import './mention.css';
-const Comments = () => {
+import { UsersContext } from "../context/UsersContext";
+import "./mention.css";
+import Axios from "axios";
+import Avatar from "react-avatar";
+import { PusherContext } from "../context/PusherContext";
+
+const Comments = ({ id }) => {
     const users = useContext(UsersContext);
-    const [message, setMessage] = useState("");
-    const [mentions, setMentions] = useState([]);
+    const channel = useContext(PusherContext);
+
+    useEffect(() => {
+        if (channel) {
+            channel.bind(`CommentCreated.${id}`, function (data) {
+                console.log('Comment Created');
+                fetchComment();
+            });
+        }
+
+        return () => {
+            if (channel) {
+                channel.unbind(`CommentCreated.${id}`);
+            }
+        };
+    }, [channel]);
+    const [comments, setComments] = useState([]);
+    const [errors, setErrors] = useState({});
+    const [data, setData] = useState({
+        todo_id: id,
+        message: "",
+        mentions: {},
+        formated_message: "",
+    });
     const handleChange = (event, newValue, newPlainTextValue, mentions) => {
-         setMessage(newValue);
-         setMentions({ mentions });
-     };
+        setData({
+            ...data,
+            message: newValue,
+            mentions: mentions,
+            formated_message: newPlainTextValue,
+        });
+    };
     const userMentionData = users.map((user) => ({
         id: user.id,
         display: user.name,
     }));
+
+    useEffect(() => {
+        fetchComment();
+    }, []);
+
+    const fetchComment = async () => {
+        const response = await Axios.get("/api/todo/" + id + "/comments");
+        setComments(response.data.data);
+    };
+
+    const onSubmit = async () => {
+        setErrors({});
+        try {
+            await Axios.post("/api/comments/store", data);
+            setData({ ...data, message: "", mentions: {} });
+            setErrors({});
+        } catch (err) {
+            if (err.response.status === 422) {
+                setErrors(err.response.data.errors);
+            } else {
+                setErrors({});
+                setData({ ...data, message: "", mentions: {} });
+            }
+        }
+    };
     return (
         <div className="d-flex justify-content-center row">
             <div className="col-md-12">
@@ -21,7 +76,7 @@ const Comments = () => {
                     <div className="bg-light p-2">
                         <div className="">
                             <MentionsInput
-                                value={message}
+                                value={data.message}
                                 onChange={handleChange}
                                 placeholder="Type anything, use the @ symbol to tag other users."
                                 className="mentions"
@@ -37,6 +92,7 @@ const Comments = () => {
                         </div>
                         <div className="mt-2 text-right">
                             <button
+                                onClick={onSubmit}
                                 className="btn btn-primary btn-sm shadow-none"
                                 type="button"
                             >
@@ -50,37 +106,38 @@ const Comments = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="bg-white p-2">
-                        <div className="d-flex flex-row user-info">
-                            <img
-                                className="rounded-circle"
-                                src="https://i.imgur.com/RpzrMR2.jpg"
-                                width="40"
-                            />
-                            <div className="d-flex flex-column justify-content-start ml-2">
-                                <span className="d-block font-weight-bold name">
-                                    Marry Andrews
-                                </span>
-                                <span className="date text-black-50">
-                                    Shared publicly - Jan 2020
-                                </span>
-                            </div>
-                        </div>
-                        <div className="mt-2">
-                            <p className="comment-text">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis nostrud exercitation
-                                ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat.
-                            </p>
-                        </div>
-                    </div>
+
+                    {comments &&
+                        comments.map((comment) => {
+                            return (
+                                <div key={comment.id} className="bg-white p-2">
+                                    <div className="d-flex flex-row user-info">
+                                        <Avatar
+                                            name={comment.user}
+                                            round={true}
+                                            size={40}
+                                        />
+                                        <div className="d-flex flex-column justify-content-start ml-2">
+                                            <span className="d-block font-weight-bold name">
+                                                {comment.user}
+                                            </span>
+                                            <span className="date text-black-50">
+                                                {comment.created_at}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="mt-2">
+                                        <p className="comment-text">
+                                            {comment.formated_message}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })}
                 </div>
             </div>
         </div>
     );
-}
+};
 
-export default Comments
+export default Comments;

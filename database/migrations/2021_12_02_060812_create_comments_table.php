@@ -19,7 +19,8 @@ class CreateCommentsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('todo_id');
             $table->foreign('todo_id')->references('id')->on('todos')->onDelete('cascade');
-            $table->string('message');
+            $table->text('message');
+            $table->text('formated_message');
             $table->softDeletes();
             $table->timestamps();
         });

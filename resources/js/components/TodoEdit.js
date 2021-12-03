@@ -33,10 +33,7 @@ const TodoEdit = ({}) => {
         });
     };
 
-    // const fetchComment = async() => {
-    //     const response = await Axios.get("/api/todo/" + id + '/comments');
-    //     setComments(response.data.data);
-    // }
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -148,6 +145,8 @@ const TodoEdit = ({}) => {
             >
                 Submit
             </button>
+
+            <Comments id={id} />
         </div>
     );
 };

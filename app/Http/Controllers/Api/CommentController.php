@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Comment;
+use App\Events\CommentCreatedEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CommentRequest;
 use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
@@ -16,7 +19,11 @@ class CommentController extends Controller
      */
     public function index($id)
     {
-        return CommentResource::collection(Comment::where('todo_id',$id)->get());
+        return CommentResource::collection(
+            Comment::where('todo_id',$id)
+            ->orderBy('created_at','desc')
+            ->get()
+        );
     }
 
     /**
@@ -25,42 +32,12 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $data = $request->validated();
+        $data['user_id'] = Auth::user()->id;
+        $comment = Comment::create($data);
+        event(new CommentCreatedEvent($comment));
+        return response()->json('Success',200);
     }
 }
