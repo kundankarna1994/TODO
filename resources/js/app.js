@@ -12,4 +12,8 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/Index');
+
+if(document.getElementById("root")){
+    require("./components/Index");
+}
+

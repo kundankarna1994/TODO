@@ -29,4 +29,12 @@ class CommentRequest extends FormRequest
             'formated_message' => 'required|string|max:500',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'message.required' => 'Comment Cannot be empty.',
+            'message.max' => 'Comment Cannot be more than 255 character',
+        ];
+    }
 }

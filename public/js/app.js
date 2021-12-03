@@ -104607,7 +104607,9 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  */
 
 
-__webpack_require__(/*! ./components/Index */ "./resources/js/components/Index.js");
+if (document.getElementById("root")) {
+  __webpack_require__(/*! ./components/Index */ "./resources/js/components/Index.js");
+}
 
 /***/ }),
 
@@ -105058,6 +105060,14 @@ var Comments = function Comments(_ref) {
     };
   }();
 
+  var onCancel = function onCancel() {
+    setData(_objectSpread(_objectSpread({}, data), {}, {
+      message: "",
+      mentions: {}
+    }));
+    setErrors({});
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "d-flex justify-content-center row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -105079,13 +105089,17 @@ var Comments = function Comments(_ref) {
     trigger: "@",
     data: userMentionData,
     className: "mentions__mention"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "textarea-feedback",
+    role: "alert"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", null, errors.message ? errors.message[0] : ""))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "mt-2 text-right"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
     onClick: onSubmit,
     className: "btn btn-primary btn-sm shadow-none",
     type: "button"
   }, "Post comment"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    onClick: onCancel,
     className: "btn btn-outline-primary btn-sm ml-1 shadow-none",
     type: "button"
   }, "Cancel"))), comments && comments.map(function (comment) {
@@ -105962,8 +105976,6 @@ var TodoList = function TodoList(_ref) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
     className: "list-group list-group-flush"
   }, results && results.map(function (result) {
-    console.log(result.completed);
-
     if (result.completed === 0) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
         key: result.id,

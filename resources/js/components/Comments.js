@@ -69,6 +69,10 @@ const Comments = ({ id }) => {
             }
         }
     };
+    const onCancel = () => {
+        setData({ ...data, message: "", mentions: {} });
+        setErrors({});
+    }
     return (
         <div className="d-flex justify-content-center row">
             <div className="col-md-12">
@@ -89,6 +93,11 @@ const Comments = ({ id }) => {
                                     className="mentions__mention"
                                 />
                             </MentionsInput>
+                            <span className="textarea-feedback" role="alert">
+                                <strong>
+                                    {errors.message ? errors.message[0] : ""}
+                                </strong>
+                            </span>
                         </div>
                         <div className="mt-2 text-right">
                             <button
@@ -99,6 +108,7 @@ const Comments = ({ id }) => {
                                 Post comment
                             </button>
                             <button
+                                onClick={onCancel}
                                 className="btn btn-outline-primary btn-sm ml-1 shadow-none"
                                 type="button"
                             >

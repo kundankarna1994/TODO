@@ -16,20 +16,21 @@ const App = () => {
         intializePusher();
         fetchUsers();
     }, []);
-
     const intializePusher = async() => {
         const response = await Axios.get('/api/user/token');
         const token = `Bearer ${response.data}`;
         const headers = {
             Authorization: token,
         };
-        const pusher = new Pusher("b11c4966c31edb43c445", {
-            cluster: "ap2",
+        
+        const pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY, {
+            cluster: process.env.MIX_PUSHER_APP_CLUSTER,
             authEndpoint: "/broadcasting/auth",
             auth: {
                 headers: headers,
             },
         });
+        
         setChannel(pusher.subscribe("private-todo"));
     }
     

@@ -16,7 +16,6 @@ const TodoList = ({ results }) => {
         <ul className="list-group list-group-flush">
             {results &&
                 results.map((result) => {
-                    console.log(result.completed);
                     if(result.completed === 0){
                         return (
                             <li
