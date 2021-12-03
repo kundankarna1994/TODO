@@ -15,15 +15,15 @@ class TodoCreatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $todo;
+    public $model;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Todo $model)
     {
-        $this->todo = True;
+        $this->model = $model;
     }
 
     /**

@@ -4,9 +4,8 @@ import { UsersContext } from '../context/UsersContext';
 
 const Asignee = ({value,handleChange}) => {
     const users = useContext(UsersContext);
-
+    console.log(value);
     useEffect(() => {
-
         const data = users.map((user) => {
             return { value: user.id,label:user.name}
         });
@@ -15,9 +14,16 @@ const Asignee = ({value,handleChange}) => {
     }, [users]);
     const [options,setOptions] = useState([]);
 
+    console.log(options[1]);
     return (
-        <Select name="asignee" options={options} getValue={(e) => console.log(e)} onChange={handleChange}/>
-    )
+        <Select
+            defaultValue={options[1]}
+            name="asignee"
+            options={options}
+            getValue={(e) => console.log(e)}
+            onChange={handleChange}
+        />
+    );
 }
 
 export default Asignee

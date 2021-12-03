@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Comment;
 use App\Events\CommentCreatedEvent;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\CommentResource;
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -37,7 +37,12 @@ class CommentController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::user()->id;
         $comment = Comment::create($data);
-        event(new CommentCreatedEvent($comment));
+        try{
+            event(new CommentCreatedEvent($comment));
+        }
+        catch(\Exception $e){
+            Log::info($e->getMessage());
+        }
         return response()->json('Success',200);
     }
 }

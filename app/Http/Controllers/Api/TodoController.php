@@ -13,6 +13,7 @@ use App\Http\Resources\TodoResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\TodoStoreRequest;
 use App\Http\Requests\TodoUpdateRequest;
+use Illuminate\Support\Facades\Log;
 
 class TodoController extends Controller
 {
@@ -38,8 +39,13 @@ class TodoController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $data['user_id'] = Auth::user()->id;
         $data['due_date'] = Carbon::parse($data['due_date'])->toDateTimeString();
-        Todo::create($data);
-        event(new TodoCreatedEvent());
+        $model = Todo::create($data);
+        try{
+            event(new TodoCreatedEvent($model));
+        }
+        catch(\Exception $e){
+            Log::info($e->getMessage());
+        }
         return response()->json('Todo Added',200);
     }
 
@@ -75,7 +81,12 @@ class TodoController extends Controller
         $todo = Todo::find($id);
         $data = $request->all();
         $todo->update($data);
-        event(new TodoCompletedEvent());
+        try{
+            event(new TodoCompletedEvent());
+        }
+        catch(\Exception $e){
+            Log::info($e->getMessage());
+        }
         return response()->json('Todo Completed', 200);
     }
 

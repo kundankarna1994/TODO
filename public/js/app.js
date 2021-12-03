@@ -104843,6 +104843,7 @@ var Asignee = function Asignee(_ref) {
   var value = _ref.value,
       handleChange = _ref.handleChange;
   var users = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_context_UsersContext__WEBPACK_IMPORTED_MODULE_2__["UsersContext"]);
+  console.log(value);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var data = users.map(function (user) {
       return {
@@ -104862,7 +104863,9 @@ var Asignee = function Asignee(_ref) {
       options = _useState2[0],
       setOptions = _useState2[1];
 
+  console.log(options[1]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    defaultValue: options[1],
     name: "asignee",
     options: options,
     getValue: function getValue(e) {
