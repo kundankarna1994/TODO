@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\TodoCreatedEvent;
 use App\Todo;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Events\TodoCreatedEvent;
+use App\Events\TodoCompletedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TodoResource;
 use Illuminate\Support\Facades\Auth;
@@ -47,9 +49,9 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Todo $todo)
     {
-        return new TodoResource(Todo::find($id));
+        return new TodoResource($todo);
     }
 
     /**
@@ -66,6 +68,15 @@ class TodoController extends Controller
         $data['due_date'] = Carbon::parse($data['due_date'])->toDateTimeString();
         $model->update($data);
         return response()->json('Todo Updated', 200);
+    }
+
+    public function completed(Request $request, $id)
+    {
+        $todo = Todo::find($id);
+        $data = $request->all();
+        $todo->update($data);
+        event(new TodoCompletedEvent());
+        return response()->json('Todo Completed', 200);
     }
 
 }

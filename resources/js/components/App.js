@@ -13,9 +13,8 @@ const App = () => {
     const [users, setUsers] = useState([]);
     const [channel,setChannel] = useState(null);
     useEffect(() => {
-        fetchUsers();
         intializePusher();
-        
+        fetchUsers();
     }, []);
 
     const intializePusher = async() => {

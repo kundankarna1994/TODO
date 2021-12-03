@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth:api'],function(){
     Route::resource('todo', 'Api\TodoController');
+    Route::post('todo/{id}/completed', 'Api\TodoController@completed');
     Route::get('users', 'Api\UserController@index');
     Route::get('user/token', 'Api\UserController@token');
     Route::get('todo/{id}/comments', 'Api\CommentController@index');

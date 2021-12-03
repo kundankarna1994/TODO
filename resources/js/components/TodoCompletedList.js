@@ -1,23 +1,15 @@
-import React,{useState} from 'react'
-import { Link } from 'react-router-dom';
-import Axios from 'axios';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Axios from "axios";
 
-const TodoList = ({ results }) => {
-
-    const [data,setData] = useState({
-        completed:1
-    })
-
-    const markComplete = async (id) => {
-       await Axios.post('/api/todo/' + id + '/completed',data);
-    }
+const TodoCompletedList = ({ results }) => {
+   
 
     return (
         <ul className="list-group list-group-flush">
             {results &&
                 results.map((result) => {
-                    console.log(result.completed);
-                    if(result.completed === 0){
+                    if (result.completed === 1) {
                         return (
                             <li
                                 key={result.id}
@@ -29,12 +21,7 @@ const TodoList = ({ results }) => {
                                     <Link to={`todo/edit/${result.id}`}>
                                         <span>{result.title}</span>
                                     </Link>
-                                    <button
-                                        onClick={() => markComplete(result.id)}
-                                        className="btn text-success"
-                                    >
-                                        <i className="fa fa-check"></i>
-                                    </button>
+                                    <span className="text-success">Completed</span>
                                 </div>
 
                                 <div className="d-flex justify-content-between">
@@ -54,4 +41,4 @@ const TodoList = ({ results }) => {
     );
 };
 
-export default TodoList
+export default TodoCompletedList;

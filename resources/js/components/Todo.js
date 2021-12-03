@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Axios from 'axios';
 import TodoList from './TodoList'
 import { PusherContext } from '../context/PusherContext';
+import TodoCompletedList from './TodoCompletedList';
 
 
 const Todo = () => {
@@ -14,11 +15,16 @@ const Todo = () => {
                  console.log('TodoCreated');
                  fetchData();
              });
+             channel.bind(`TodoCompleted`, function (data) {
+                 console.log("TodoCompleted");
+                 fetchData();
+             });
         }
        
         return () => {
             if(channel){
                 channel.unbind("TodoCreated");
+                channel.unbind("TodoCompleted");
             }
         };
     }, [channel]);
@@ -42,19 +48,29 @@ const Todo = () => {
                             <span>Todo</span>
                             <span>
                                 <Link to="/todo/create">
-                                <button
-                                    type="button"
-                                    className="btn btn-primary"
-                                    data-toggle="modal"
-                                    data-target="#exampleModalCenter"
-                                >
-                                    <i className="fas fa-plus"></i>
-                                </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                        data-toggle="modal"
+                                        data-target="#exampleModalCenter"
+                                    >
+                                        <i className="fas fa-plus"></i>
+                                    </button>
                                 </Link>
                             </span>
                         </div>
                     </div>
                     <TodoList results={results} />
+                </div>
+            </div>
+            <div className="col-sm-4">
+                <div className="card">
+                    <div className="card-header">
+                        <div className="d-flex justify-content-between">
+                            <span>Completed</span>
+                        </div>
+                    </div>
+                    <TodoCompletedList results={results} />
                 </div>
             </div>
         </div>
