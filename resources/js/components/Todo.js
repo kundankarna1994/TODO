@@ -13,11 +13,9 @@ const Todo = () => {
     useEffect(() => {
         if(channel){
              channel.bind(`TodoCreated`, function (data) {
-                 console.log('TodoCreated');
                  fetchData();
              });
              channel.bind(`TodoCompleted`, function (data) {
-                 console.log("TodoCompleted");
                  fetchData();
              });
         }

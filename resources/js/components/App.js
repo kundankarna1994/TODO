@@ -24,7 +24,6 @@ const App = () => {
         const headers = {
             Authorization: token,
         };
-        console.log(process.env.MIX_PUSHER_APP_KEY);
         const pusher = new Pusher(process.env.MIX_PUSHER_APP_KEY, {
             cluster: process.env.MIX_PUSHER_APP_CLUSTER,
             authEndpoint: "/broadcasting/auth",
@@ -36,7 +35,6 @@ const App = () => {
         setChannel(pusher.subscribe("private-todo"));
     }
     
-    console.log(channel);
     
     const fetchUsers = async () => {
         const response = await Axios.get("/api/users");

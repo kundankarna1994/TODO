@@ -18,14 +18,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
-    <script>
-    tinymce.init({
-        selector: 'textarea#editor', // Replace this CSS selector to match the placeholder element for TinyMCE
-        plugins: 'code table lists',
-        toolbar: 'undo redo | formatselect| bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table'
-    });
-    </script>
 </head>
 <body>
     <div id="app">
@@ -83,10 +75,9 @@
         <main class="py-4">
             @yield('content')
         </main>
-        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-        @if(config('app.env') == 'local')
+        {{-- @if(config('app.env') == 'local')
             <script src="http://localhost:35729/livereload.js"></script>
-        @endif
+        @endif --}}
     </div>
 </body>
 </html>

@@ -40,7 +40,6 @@ const TodoAdd = ({}) => {
         }));
     }
     const handleDateChange = (e) => {
-        console.log(e);
         setData((prevState) => ({
             ...prevState,
             due_date: e,

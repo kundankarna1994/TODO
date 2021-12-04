@@ -13,7 +13,6 @@ const Comments = ({ id }) => {
     useEffect(() => {
         if (channel) {
             channel.bind(`CommentCreated.${id}`, function (data) {
-                console.log('Comment Created');
                 fetchComment();
             });
         }
