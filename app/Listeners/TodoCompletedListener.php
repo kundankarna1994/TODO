@@ -3,12 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\NotificationEvent;
-use App\Events\TodoCreatedEvent;
-use App\Notifications\TodoAsignedNotification;
+use App\Notifications\TodoCompletedNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TodoCreatedListener
+class TodoCompletedListener
 {
     /**
      * Create the event listener.
@@ -26,13 +25,10 @@ class TodoCreatedListener
      * @param  object  $event
      * @return void
      */
-    public function handle(TodoCreatedEvent $event)
+    public function handle($event)
     {
         $model = $event->model;
-        
-        if($model->asigned){
-            $model->asigned->notify(new TodoAsignedNotification($model));
-            event(new NotificationEvent($model->asigned));
-        }
+        $model->user->notify(new TodoCompletedNotification($model));
+        event(new NotificationEvent($model->user));
     }
 }

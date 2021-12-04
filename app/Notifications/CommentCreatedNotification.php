@@ -3,12 +3,13 @@
 namespace App\Notifications;
 
 use App\Todo;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TodoAsignedNotification extends Notification
+class CommentCreatedNotification extends Notification
 {
     use Queueable;
 
@@ -17,9 +18,10 @@ class TodoAsignedNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Todo $model)
+    public function __construct(Todo $model,User $commenter)
     {
         $this->model = $model;
+        $this->commenter = $commenter;
     }
 
     /**
@@ -42,8 +44,8 @@ class TodoAsignedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->model->user->name . " has assigned you a todo.")
-                    ->action('View Todo', url('/todo/edit/' . $this->model->id))
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
 
@@ -56,7 +58,7 @@ class TodoAsignedNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->model->user->name . " has assigned you a todo.",
+            'message' => $this->commenter->name . " has commented on todo " . $this->model->title,
             'url' => "/todo/edit/" . $this->model->slug
         ];
     }

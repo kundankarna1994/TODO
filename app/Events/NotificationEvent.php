@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Todo;
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TodoCompletedEvent implements ShouldBroadcast
+class NotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,12 +21,10 @@ class TodoCompletedEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Todo $model)
+    public function __construct(User $model)
     {
         $this->model = $model;
     }
-
-   
 
     /**
      * Get the channels the event should broadcast on.
@@ -40,6 +38,6 @@ class TodoCompletedEvent implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'TodoCompleted';
+        return 'Notification.User.' . $this->model->id;
     }
 }

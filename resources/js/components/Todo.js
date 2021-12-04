@@ -4,6 +4,7 @@ import Axios from 'axios';
 import TodoList from './TodoList'
 import { PusherContext } from '../context/PusherContext';
 import TodoCompletedList from './TodoCompletedList';
+import Notifications from './Notifications';
 
 
 const Todo = () => {
@@ -71,6 +72,16 @@ const Todo = () => {
                         </div>
                     </div>
                     <TodoCompletedList results={results} />
+                </div>
+            </div>
+            <div className="col-sm-4">
+                <div className="card">
+                    <div className="card-header">
+                        <div className="d-flex justify-content-between">
+                            <span>Notifications</span>
+                        </div>
+                    </div>
+                    <Notifications />
                 </div>
             </div>
         </div>

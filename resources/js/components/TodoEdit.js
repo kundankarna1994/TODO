@@ -8,27 +8,31 @@ import { useParams, useNavigate } from "react-router-dom";
 import SweetAlert from "react-bootstrap-sweetalert";
 
 const TodoEdit = ({}) => {
-    const { id } = useParams();
+    const { slug } = useParams();
     const navigate = useNavigate();
     const intitalState = {
+        id:"",
         title: "",
         description: "",
         asignee: "",
         due_date: "",
+        asignee_name:""
     };
     const [data, setData] = useState(intitalState);
     const [errors, setErrors] = useState({});
     const [alert, setAlert] = useState(false);
     useEffect(() => {
         fetchData();
-    }, [id]);
+    }, [slug]);
 
     const fetchData = async () => {
-        const response = await Axios.get("/api/todo/" + id);
+        const response = await Axios.get("/api/todo/" + slug);
         setData({
+            id:response.data.data.id,
             title: response.data.data.title,
             description: response.data.data.description,
             asignee: response.data.data.asignee,
+            asignee_name: response.data.data.asignee_name,
             due_date: response.data.data.formated_due_date,
         });
     };
@@ -66,7 +70,7 @@ const TodoEdit = ({}) => {
     const onSubmit = async () => {
         setErrors({});
         try {
-            await Axios.put("/api/todo/" + id, data);
+            await Axios.put("/api/todo/" + slug, data);
             setErrors({});
             setAlert(true);
             setTimeout(() => {
@@ -128,7 +132,13 @@ const TodoEdit = ({}) => {
             </div>
             <div className="form-group">
                 <label htmlFor="asignee">Asignee</label>
-                <Asignee handleChange={selectChange} value={data.asignee} />
+                {data.asignee && data.asignee_name && (
+                    <Asignee
+                        handleChange={selectChange}
+                        value={data.asignee}
+                        label={data.asignee_name}
+                    />
+                )}
             </div>
             <div className="form-group">
                 <label htmlFor="due_date">Due</label>
@@ -146,7 +156,9 @@ const TodoEdit = ({}) => {
                 Submit
             </button>
 
-            <Comments id={id} />
+            {data.id && (
+                <Comments id={data.id} />
+            )}
         </div>
     );
 };

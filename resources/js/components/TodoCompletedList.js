@@ -18,7 +18,7 @@ const TodoCompletedList = ({ results }) => {
                                 className="list-group-item d-flex flex-column"
                             >
                                 <div className="d-flex justify-content-between">
-                                    <Link to={`todo/edit/${result.id}`}>
+                                    <Link to={`todo/edit/${result.slug}`}>
                                         <span>{result.title}</span>
                                     </Link>
                                     <span className="text-success">Completed</span>

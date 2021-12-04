@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\NotificationResources;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +21,17 @@ class UserController extends Controller
         return UserResource::collection(User::all()->except(Auth::id()));
     }
 
-    public function token()
+    public function user()
     {
-        $tokenResult = Auth::user()->createToken('Personal Access Token');
+        $user = Auth::user();
+        $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->accessToken;
-        return response()->json($token);
+        return response()->json(['user' => $user,'token' => $token]);
+    }
+
+    public function notifications()
+    {
+        $user = Auth::user();
+        return NotificationResources::collection($user->notifications);
     }
 }

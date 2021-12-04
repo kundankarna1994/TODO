@@ -3,12 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\NotificationEvent;
-use App\Events\TodoCreatedEvent;
-use App\Notifications\TodoAsignedNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Notifications\CommentCreatedNotification;
 
-class TodoCreatedListener
+class CommentCreatedListener
 {
     /**
      * Create the event listener.
@@ -26,13 +25,13 @@ class TodoCreatedListener
      * @param  object  $event
      * @return void
      */
-    public function handle(TodoCreatedEvent $event)
+    public function handle($event)
     {
-        $model = $event->model;
-        
-        if($model->asigned){
-            $model->asigned->notify(new TodoAsignedNotification($model));
-            event(new NotificationEvent($model->asigned));
+        $model = $event->comment->todo;
+        $commenter = $event->comment->user;
+        if($commenter->id !== $model->user->id){
+            $model->user->notify(new CommentCreatedNotification($model, $commenter));
+            event(new NotificationEvent($model->user));
         }
     }
 }

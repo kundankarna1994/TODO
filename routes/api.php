@@ -18,7 +18,8 @@ Route::group(['middleware' => 'auth:api'],function(){
     Route::resource('todo', 'Api\TodoController');
     Route::post('todo/{id}/completed', 'Api\TodoController@completed');
     Route::get('users', 'Api\UserController@index');
-    Route::get('user/token', 'Api\UserController@token');
+    Route::get('user', 'Api\UserController@user');
+    Route::get('user/notifications', 'Api\UserController@notifications');
     Route::get('todo/{id}/comments', 'Api\CommentController@index');
     Route::post('comments/store', 'Api\CommentController@store');
 });

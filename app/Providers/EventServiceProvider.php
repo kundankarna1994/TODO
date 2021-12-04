@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\CommentCreatedEvent;
+use App\Events\TodoCompletedEvent;
 use App\Events\TodoCreatedEvent;
+use App\Listeners\CommentCreatedListener;
+use App\Listeners\TodoCompletedListener;
 use Illuminate\Support\Facades\Event;
 use App\Listeners\TodoCreatedListener;
 use Illuminate\Auth\Events\Registered;
@@ -22,6 +26,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         TodoCreatedEvent::class => [
             TodoCreatedListener::class
+        ],
+        TodoCompletedEvent::class => [
+            TodoCompletedListener::class
+        ],
+        CommentCreatedEvent::class => [
+            CommentCreatedListener::class
         ]
     ];
 

@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TodoAsignedNotification extends Notification
+class TodoCompletedNotification extends Notification
 {
     use Queueable;
 
@@ -42,8 +42,8 @@ class TodoAsignedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->model->user->name . " has assigned you a todo.")
-                    ->action('View Todo', url('/todo/edit/' . $this->model->id))
+                    ->line("Todo " . $this->model->title . " is completed")
+                    ->action('Notification Action', url("/todo/edit/" . $this->model->slug))
                     ->line('Thank you for using our application!');
     }
 
@@ -56,7 +56,7 @@ class TodoAsignedNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->model->user->name . " has assigned you a todo.",
+            'message' => "Todo " . $this->model->title . " is completed",
             'url' => "/todo/edit/" . $this->model->slug
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NotificationEvent;
 use App\Todo;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -55,9 +56,9 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Todo $todo)
+    public function show($slug)
     {
-        return new TodoResource($todo);
+        return new TodoResource(Todo::where('slug',$slug)->first());
     }
 
     /**
@@ -67,9 +68,9 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TodoUpdateRequest $request, $id)
+    public function update(TodoUpdateRequest $request, $slug)
     {
-        $model = Todo::find($id);
+        $model = Todo::where('slug',$slug)->first();
         $data = $request->validated();
         $data['due_date'] = Carbon::parse($data['due_date'])->toDateTimeString();
         $model->update($data);
@@ -79,10 +80,10 @@ class TodoController extends Controller
     public function completed(Request $request, $id)
     {
         $todo = Todo::find($id);
-        $data = $request->all();
+        $data = $request->only('completed');
         $todo->update($data);
         try{
-            event(new TodoCompletedEvent());
+            event(new TodoCompletedEvent($todo));
         }
         catch(\Exception $e){
             Log::info($e->getMessage());

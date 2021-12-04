@@ -16,12 +16,14 @@ class CommentCreatedEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $comment;
+
+    public $data;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Comment $comment)
+    public function __construct(Comment $comment,$data)
     {
         $this->comment = $comment;
     }
