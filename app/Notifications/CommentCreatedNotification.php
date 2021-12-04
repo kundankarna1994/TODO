@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 
 class CommentCreatedNotification extends Notification
 {
@@ -32,7 +33,7 @@ class CommentCreatedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database','slack'];
     }
 
     /**
@@ -44,8 +45,8 @@ class CommentCreatedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->line($this->commenter->name . " has commented on todo " . $this->model->title)
+                    ->action('View', url("/todo/edit/" . $this->model->slug))
                     ->line('Thank you for using our application!');
     }
 
@@ -61,5 +62,11 @@ class CommentCreatedNotification extends Notification
             'message' => $this->commenter->name . " has commented on todo " . $this->model->title,
             'url' => "/todo/edit/" . $this->model->slug
         ];
+    }
+
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+            ->content($this->commenter->name . " has commented on todo " . $this->model->title);
     }
 }

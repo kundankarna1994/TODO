@@ -3,13 +3,14 @@
 namespace App\Notifications;
 
 use App\Todo;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 
-class TodoAsignedNotification extends Notification
+class MentionNotification extends Notification
 {
     use Queueable;
 
@@ -18,9 +19,10 @@ class TodoAsignedNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Todo $model)
+    public function __construct(Todo $model,User $commenter)
     {
         $this->model = $model;
+        $this->commenter = $commenter;
     }
 
     /**
@@ -43,8 +45,8 @@ class TodoAsignedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->model->user->name . " has assigned you a todo.")
-                    ->action('View Todo', url('/todo/edit/' . $this->model->id))
+                    ->line($this->commenter->name . " has mentioned you in a comment of  todo " . $this->model->title)
+                    ->action('View', url("/todo/edit/" . $this->model->slug))
                     ->line('Thank you for using our application!');
     }
 
@@ -57,7 +59,7 @@ class TodoAsignedNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->model->user->name . " has assigned you a todo.",
+            'message' => $this->commenter->name . " has mentioned you in a comment of  todo ". $this->model->title,
             'url' => "/todo/edit/" . $this->model->slug
         ];
     }
@@ -65,6 +67,6 @@ class TodoAsignedNotification extends Notification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->content($this->model->user->name . " has assigned you a todo.");
+            ->content($this->commenter->name . " has mentioned you in a comment of  todo " . $this->model->title);
     }
 }

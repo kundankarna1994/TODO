@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 
 class TodoCompletedNotification extends Notification
 {
@@ -30,7 +31,7 @@ class TodoCompletedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'slack'];
     }
 
     /**
@@ -43,7 +44,7 @@ class TodoCompletedNotification extends Notification
     {
         return (new MailMessage)
                     ->line("Todo " . $this->model->title . " is completed")
-                    ->action('Notification Action', url("/todo/edit/" . $this->model->slug))
+                    ->action('View Todo', url("/todo/edit/" . $this->model->slug))
                     ->line('Thank you for using our application!');
     }
 
@@ -59,5 +60,11 @@ class TodoCompletedNotification extends Notification
             'message' => "Todo " . $this->model->title . " is completed",
             'url' => "/todo/edit/" . $this->model->slug
         ];
+    }
+
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+            ->content("Todo " . $this->model->title . " is completed");
     }
 }

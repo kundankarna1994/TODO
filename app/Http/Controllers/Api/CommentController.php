@@ -38,7 +38,7 @@ class CommentController extends Controller
         $data['user_id'] = Auth::user()->id;
         $comment = Comment::create($data);
         try{
-            event(new CommentCreatedEvent($comment,$data));
+            event(new CommentCreatedEvent($comment, $request->all()));
         }
         catch(\Exception $e){
             Log::info($e->getMessage());

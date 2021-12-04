@@ -42,4 +42,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Todo::class,'user_id');
     }
+
+    public function routeNotificationForSlack($notification)
+    {
+        return 'https://hooks.slack.com/services/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';
+    }
 }

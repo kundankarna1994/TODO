@@ -26,6 +26,7 @@ class CommentCreatedEvent implements ShouldBroadcast
     public function __construct(Comment $comment,$data)
     {
         $this->comment = $comment;
+        $this->data = $data;
     }
 
     /**

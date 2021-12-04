@@ -34,5 +34,6 @@ class TodoCreatedListener
             $model->asigned->notify(new TodoAsignedNotification($model));
             event(new NotificationEvent($model->asigned));
         }
+        
     }
 }
