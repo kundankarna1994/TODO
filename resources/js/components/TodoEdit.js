@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Asignee from "./Asignee";
 import Comments from "./Comments";
 import CustomDate from "./Date";
-import TinyEditor from "./Editor";
 import { useParams, useNavigate } from "react-router-dom";
 import SweetAlert from "react-bootstrap-sweetalert";
 
@@ -37,7 +36,7 @@ const TodoEdit = ({}) => {
         });
     };
 
-    
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -119,12 +118,18 @@ const TodoEdit = ({}) => {
                 </span>
             </div>
             <div className="form-group">
-                <label htmlFor="title">Title</label>
-                <TinyEditor
+                <label htmlFor="description">Description</label>
+                <textarea
                     value={data.description}
-                    handleChange={editorChange}
-                />
-                <span className="textarea-feedback" role="alert">
+                    onChange={handleChange}
+                    name="description"
+                    className={
+                        errors.title
+                            ? "is-invalid form-control"
+                            : "form-control"
+                    }
+                ></textarea>
+                <span className="invalid-feedback" role="alert">
                     <strong>
                         {errors.description ? errors.description[0] : ""}
                     </strong>
@@ -156,9 +161,7 @@ const TodoEdit = ({}) => {
                 Submit
             </button>
 
-            {data.id && (
-                <Comments id={data.id} />
-            )}
+            {data.id && <Comments id={data.id} />}
         </div>
     );
 };

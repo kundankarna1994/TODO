@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * TodoUpdateRequest
+ */
 class TodoUpdateRequest extends FormRequest
 {
     /**
@@ -26,11 +29,14 @@ class TodoUpdateRequest extends FormRequest
         return [
             'title' => 'required|max:255|string',
             'due_date' => 'required',
-            'description' => 'string|nullable',
-            'asignee' => 'integer|nullable'
+            'description' => 'string|required|max:500',
+            'asignee' => ''
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function messages()
     {
         return [

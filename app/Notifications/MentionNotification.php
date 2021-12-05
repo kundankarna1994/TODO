@@ -64,6 +64,10 @@ class MentionNotification extends Notification
         ];
     }
 
+    /**
+     * @param $notifiable
+     * @return SlackMessage
+     */
     public function toSlack($notifiable)
     {
         return (new SlackMessage)

@@ -2,7 +2,6 @@ import Axios from "axios";
 import React,{useState} from "react";
 import Asignee from "./Asignee";
 import CustomDate from "./Date";
-import TinyEditor from "./Editor";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useNavigate } from "react-router-dom";
 
@@ -76,7 +75,7 @@ const TodoAdd = ({}) => {
                     title="Success!"
                     onConfirm={() => setAlert(false)}
                 >
-                   Todo Added Successfully
+                    Todo Added Successfully
                 </SweetAlert>
             )}
             <div className="form-group">
@@ -99,11 +98,17 @@ const TodoAdd = ({}) => {
                 </span>
             </div>
             <div className="form-group">
-                <label htmlFor="title">Title</label>
-                <TinyEditor
+                <label htmlFor="description">Description</label>
+                <textarea
                     value={data.description}
-                    handleChange={editorChange}
-                />
+                    name="description"
+                    onChange={handleChange}
+                    className={
+                        errors.description
+                            ? "is-invalid form-control"
+                            : "form-control"
+                    }
+                ></textarea>
                 <span className="textarea-feedback" role="alert">
                     <strong>
                         {errors.description ? errors.description[0] : ""}
@@ -113,6 +118,9 @@ const TodoAdd = ({}) => {
             <div className="form-group">
                 <label htmlFor="asignee">Asignee</label>
                 <Asignee handleChange={selectChange} value={data.asignee} />
+                <span className="textarea-feedback" role="alert">
+                    <strong>{errors.asignee ? errors.asignee[0] : ""}</strong>
+                </span>
             </div>
             <div className="form-group">
                 <label htmlFor="due_date">Due</label>
@@ -121,8 +129,15 @@ const TodoAdd = ({}) => {
                     value={data.due_date}
                     handleChange={handleDateChange}
                 />
+                <span className="textarea-feedback" role="alert">
+                    <strong>{errors.due_date ? errors.due_date[0] : ""}</strong>
+                </span>
             </div>
-            <button type="submit" onClick={onSubmit} className="btn btn-primary">
+            <button
+                type="submit"
+                onClick={onSubmit}
+                className="btn btn-primary"
+            >
                 Submit
             </button>
         </div>

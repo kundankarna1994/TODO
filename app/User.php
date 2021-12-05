@@ -38,11 +38,18 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function todos()
     {
         return $this->hasMany(Todo::class,'user_id');
     }
 
+    /**
+     * @param $notification
+     * @return mixed
+     */
     public function routeNotificationForSlack($notification)
     {
         return env('SLACK_HOOK');

@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * CommentRequest
+ */
 class CommentRequest extends FormRequest
 {
     /**
@@ -30,6 +33,9 @@ class CommentRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function messages()
     {
         return [

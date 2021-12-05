@@ -23,10 +23,10 @@ class CommentCreatedEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Comment $comment,$data)
+    public function __construct(Comment $comment)
     {
         $this->comment = $comment;
-        $this->data = $data;
+        $this->data = request()->all();
     }
 
     /**

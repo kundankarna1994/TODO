@@ -17,8 +17,8 @@ mix.react('resources/js/app.js', 'public/js')
 
 
 //Live reloading
-// var LiveReloadPlugin = require("webpack-livereload-plugin");
+var LiveReloadPlugin = require("webpack-livereload-plugin");
 
-// mix.webpackConfig({
-//       plugins: [new LiveReloadPlugin()],
-// });
+mix.webpackConfig({
+      plugins: [new LiveReloadPlugin()],
+});

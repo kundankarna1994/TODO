@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * TodoStoreRequest
+ */
 class TodoStoreRequest extends FormRequest
 {
     /**
@@ -24,13 +27,16 @@ class TodoStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255|string',
+            'title' => 'required|max:255|string|unique:todos',
             'due_date' => 'required',
-            'description' => 'string|nullable',
-            'asignee' => 'integer|nullable'
+            'description' => 'string|required|max:500',
+            'asignee' => ''
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function messages()
     {
         return [

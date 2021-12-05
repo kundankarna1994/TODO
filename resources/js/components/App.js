@@ -8,7 +8,7 @@ import TodoAdd from "./TodoAdd";
 import TodoEdit from "./TodoEdit";
 import Axios from 'axios';
 import Pusher from "pusher-js";
-
+import NotFound from './NotFound'
 
 const App = () => {
     const [users, setUsers] = useState([]);
@@ -50,6 +50,7 @@ const App = () => {
                             <Route path="/" element={<Todo />} />
                             <Route path="/todo/create" element={<TodoAdd />} />
                             <Route path="/todo/edit/:slug" element={<TodoEdit />} />
+                            <Route path="*" element={<NotFound />} />
                         </Routes>
                     </UserContext.Provider>
                 </UsersContext.Provider>

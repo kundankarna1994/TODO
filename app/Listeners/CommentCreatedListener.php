@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\NotificationEvent;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Notifications\CommentCreatedNotification;
 use App\Notifications\MentionNotification;
 use App\User;
@@ -32,7 +30,7 @@ class CommentCreatedListener
         $model = $event->comment->todo;
         $data = $event->data;
         $mentions = $data['mentions'];
-        
+
         $commenter = $event->comment->user;
         if($commenter->id !== $model->user->id){
             $model->user->notify(new CommentCreatedNotification($model, $commenter));

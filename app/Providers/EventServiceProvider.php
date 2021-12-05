@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
+use App\Todo;
+use App\Comment;
 use App\Events\CommentCreatedEvent;
 use App\Events\TodoCompletedEvent;
 use App\Events\TodoCreatedEvent;
 use App\Listeners\CommentCreatedListener;
 use App\Listeners\TodoCompletedListener;
-use Illuminate\Support\Facades\Event;
 use App\Listeners\TodoCreatedListener;
+use App\Observers\CommentObserver;
+use App\Observers\TodoObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -44,6 +47,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        Todo::observe(TodoObserver::class);
+        Comment::observe(CommentObserver::class);
     }
 }
