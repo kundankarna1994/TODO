@@ -36,12 +36,12 @@ services:
 
   #MySQL Service
   db:
-    image: mariadb:10.5.8
+    image: mysql:5.7.22
     container_name: db
     restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - "4306:4306"
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
