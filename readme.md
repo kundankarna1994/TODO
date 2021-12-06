@@ -1,7 +1,7 @@
 ### Environments & Frameworks
 - PHP 7.2.24
 - [Laravel 5.8](https://laravel.com/docs/5.8)
-- [Mariadb](https://mariadb.org/)
+- [Mysql 5.7.22](https://www.mysql.com/)
 - [Pusher](https://pusher.com/ "Pusher")
 - [Laravel Passport](https://laravel.com/docs/5.8/passport)
 - [React](https://reactjs.org/)
@@ -17,38 +17,44 @@ git clone git@github.com:kundankarna1994/TODO.git
 cd TODO i.e (directory name of the repo)
 ```
 3. Copy the .env.example to .env file.
-4. Run the docker compose
-```bash
-docker-compose up -d (i.e -d run the process in background)
-```
-5. Run the composer install
+4. Run the composer install
 ```bash
 composer install
 ```
-6. Create Encryption Key
+5. Copy the .env.example to .env
+```bash
+cp .env.example .env
+```
+6. Configure the database connection in .env
+
+7. Run the docker compose
+```bash
+ docker-compose up -d (i.e -d run the process in background)
+```
+8. Create Encryption Key
 ```bash
 docker-compose exec app php artisan key:generate
 ```
-7. Run the migration 
+9. Run the migration 
 ```bash
 docker-compose exec app php artisan migrate
 ```
-8. Install Passport
+10. Install Passport
 ```bash
 docker-compose exec app php artisan passport:install
 ```
-9. Setup Passport Client
+11. Setup Passport Client
 ```bash
 docker-compose exec app php artisan passport:client --personal
 ```
-10. Setup Mail Trap in .env
-11. Setup Pusher 
-12. Add pusher app key and cluster in MIX variable.
-13. Add Slack Hook in SLACK_HOOK env.
-14. Go to [url](http://localhost:8000), on mac go to [url](http://0.0.0.0:8000)
-15. Register a user
-16. Verify your email address.
-17. Start creating todo
+12. Setup Mail Trap in .env
+13. Setup Pusher 
+14. Add pusher app key and cluster in MIX variable.
+15. Add Slack Hook in SLACK_HOOK env.
+16. Go to [url](http://localhost:8000), on mac go to [url](http://0.0.0.0:8000)
+17. Register a user
+18. Verify your email address.
+19. Start creating todo
 
 ### Features
 1. Registration
