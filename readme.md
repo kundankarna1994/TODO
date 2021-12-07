@@ -7,6 +7,7 @@
 - [React](https://reactjs.org/)
 - [React Mention](https://github.com/signavio/react-mentions)
 - [Pusher](https://pusher.com/)
+
 ### Installation
 1. Clone the repository
 ```bash
@@ -73,9 +74,20 @@ docker-compose exec app php artisan passport:client --personal
 14. Live comment update
 
 
-###Important Links and documents
+### Important Links and documents
 Here is the documentation on how to implement Pusher in laravel [Documentation](https://laravel.com/docs/5.8/broadcasting#only-to-others).
 
 Here is the documentation on how to implement Pusher in React [Documentation](https://github.com/pusher/pusher-js)
 
 
+### Unit Test
+
+Copy .env.example to .env.testing
+
+Configure the database
+
+Run the command below from the project directory.
+
+```bash
+./vendor/bin/phpunit
+```
