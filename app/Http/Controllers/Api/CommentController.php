@@ -50,7 +50,7 @@ class CommentController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = Auth::user()->id;
-        $this->model->create($data);
-        return response()->json('Success',200);
+        $model = $this->model->create($data);
+        return new CommentResource($model);
     }
 }

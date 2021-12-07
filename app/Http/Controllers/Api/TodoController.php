@@ -52,8 +52,8 @@ class TodoController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $data['user_id'] = Auth::user()->id;
         $data['due_date'] = Carbon::parse($data['due_date'])->toDateTimeString();
-        $this->model->create($data);
-        return response()->json('Todo Added',200);
+        $model = $this->model->create($data);
+        return new TodoResource($model);
     }
 
     /**
@@ -80,7 +80,7 @@ class TodoController extends Controller
         $data = $request->validated();
         $data['due_date'] = Carbon::parse($data['due_date'])->toDateTimeString();
         $model->update($data);
-        return response()->json('Todo Updated', 200);
+        return new TodoResource($model);
     }
 
     /**
@@ -90,10 +90,10 @@ class TodoController extends Controller
      */
     public function completed(Request $request, $id)
     {
-        $todo = $this->model->find($id);
+        $model = $this->model->find($id);
         $data = $request->only('completed');
-        $todo->update($data);
-        return response()->json('Todo Completed', 200);
+        $model->update($data);
+        return new TodoResource($model);
     }
 
 }
